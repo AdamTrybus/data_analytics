@@ -21,3 +21,8 @@ model {
   for (n in 1:N)
     y[n] ~ bernoulli_logit(alpha_group[group_id[n]] + X[n] * beta);
 }
+generated quantities {
+  vector[N] log_lik;
+  for (n in 1:N)
+    log_lik[n] = bernoulli_logit_lpmf(y[n] | alpha_group[group_id[n]] + dot_product(X[n], beta));
+}
